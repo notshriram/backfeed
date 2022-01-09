@@ -4,6 +4,9 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
+            @foreach ($errors->all() as $error)
+                <div class="alert alert-danger">{!! $errors->first() !!}</div>
+            @endforeach
             <div class="card">
                 <div class="card-header">{{ __('Register') }}</div>
 
@@ -60,10 +63,10 @@
                                 <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">
                             </div>
                         </div>
-
-                        <div class="row mb-0">
+			<div class="row mb-0">
                             <div class="col-md-6 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
+				                {!! RecaptchaV3::field('register') !!}
+                                <button value="Register" type="submit" class="btn btn-primary">
                                     {{ __('Register') }}
                                 </button>
                             </div>

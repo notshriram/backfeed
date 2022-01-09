@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Models\Feedback;
 use App\Models\User;
-use Auth;
 
 
 class HomeController extends Controller
@@ -17,7 +17,7 @@ class HomeController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware(['auth','verified']);
     }
 
     /**
@@ -27,9 +27,9 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $user_id=Auth::user()->id;
-        $feedbacks=Auth::user()->feedback;
-        return view('home', ["feedbacks"=>$feedbacks, "user_id"=>$user_id]);
+	    $user = Auth::user();
+        $feedbacks = Feedback::where("user_id", "=", $user->id)->orderBy('created_at', 'desc')->paginate(10);
+        return view('home', ["feedbacks"=>$feedbacks,"user"=>$user]);
 
     }
 }
